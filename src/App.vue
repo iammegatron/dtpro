@@ -33,13 +33,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  //margin-top: 20px;
-}
-#app {
-  background-size: cover;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  background:linear-gradient(rgba(255,255,255,0.4),rgba(255,255,255,0.9)), url("./assets/bg_ares.jpg");
+  margin-top: 20px;
 }
 
 
