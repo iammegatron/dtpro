@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <a href="" class="button is-primary">Primary</a>
+    <a href="" class="button is-primary" @click="update()" >Update Software</a>
     <div class="block">
       {{msg}}
     </div>
@@ -11,11 +11,17 @@
 </template>
 
 <script>
+import request from "superagent"
 export default {
   name: 'hello',
   data () {
     return {
       msg: 'test'
+    }
+  },
+  methods:{
+    update(){
+      request.get('/update/start');
     }
   }
 }
