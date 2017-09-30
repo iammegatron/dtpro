@@ -31,6 +31,8 @@ app.get('/update/start', (req, res) => {
     if(update && update.summary.changes) {
       require('child_process').exec('./restart_server.sh');
       process.exit(1);
+    }else{
+      res.status(200).json(update);
     }
   });
 });
