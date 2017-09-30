@@ -29,8 +29,8 @@ app.get('/update/start', (req, res) => {
   git.pull(function(err, update) {
     console.log("pulled from ",err, update)
     if(update && update.summary.changes) {
-      //require('child_process').exec('./restart_server.sh');
-      //process.exit(1);
+      require('child_process').exec('./restart_server.sh');
+      process.exit(1);
     }
   });
 });
