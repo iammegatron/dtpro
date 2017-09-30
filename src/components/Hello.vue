@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <a href="" class="button is-primary" @click="update()" >Update Software</a>
+    <button class="button is-primary" @click="update" >Update Software</button>
+    <button type="button" name="button" @click="kk">asdfa</button>
     <div class="block">
       <i class="fa fa-5x fa-tint"></i><i class="fa fa-3x fa-tint"></i>
       {{value}}
@@ -38,8 +39,16 @@ export default {
     vueSlider
   },
   methods:{
+    kk(){
+      request.get("/aa").end((err,res)=>{
+        console.log(err,res)
+      })
+    },
     update(){
-      request.get('/update/start');
+      console.log("updating...")
+      request.get('/update').end((err,res)=>{
+        console.log(err,res);
+      });
     }
   }
 }
