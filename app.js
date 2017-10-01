@@ -32,7 +32,7 @@ app.get('/dcmotor', (req,res)=>{
       p6.digitalWrite(0)
       p13.digitalWrite(0)
     }else{
-      p5.pwmWrite(+req.query.rpm) //0 to 255
+      p5.pwmWrite(200+10*req.query.rpm) //0 to 255
       p6.digitalWrite(1)
       p13.digitalWrite(0)
     }
