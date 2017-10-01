@@ -106,7 +106,7 @@ export default {
     },
     'fluid_rate': function(val){
       if(this.isfluidon){
-        request.get('/dcmotor').query({rpm:this.fluid_rate});
+        request.get('/dcmotor').query({rpm:this.fluid_rate}).end();
       }
     }
   },
@@ -114,9 +114,9 @@ export default {
     toggleFluidOn(){
       this.isfluidon = !this.isfluidon;
       if(this.isfluidon){
-        request.get('/dcmotor').query({rpm:this.fluid_rate});
+        request.get('/dcmotor').query({rpm:this.fluid_rate}).end();
       }else{
-        request.get('/dcmotor').query({rpm:0});
+        request.get('/dcmotor').query({rpm:0}).end();
       }
     },
     toggleForward(){
