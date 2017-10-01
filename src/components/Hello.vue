@@ -2,19 +2,23 @@
   <div class="container">
     <!-- top button -->
     <div class="columns">
-      <button class="column is-2 button is-large is-round" @click="toggleFluidOn" :class="{'is-success': isfluidon}">
-        <span>
-          <i class="fa fa-5x fa-tint"></i>
+      <button class="column is-3 button is-large" @click="toggleFluidOn" :class="{'is-success': isfluidon}">
+        <span class="icon">
+          <i class="fa fa-2x fa-tint"></i>
         </span>
       </button>
 
-      <div class="column is-8 ">
-        <button class="button is-large is-round" @click="toggleRun" :class="{'is-success':isrun}"><i class="fa fa-3x fa-play-circle"></i></button>
+      <div class="column is-6 ">
+        <button class="button is-large is-fullwidth" @click="toggleRun" :class="{'is-success':isrun}">
+          <span class="icon">
+            <i class="fa fa-2x fa-play-circle"></i>
+          </span>
+        </button>
       </div>
 
-      <button class="column is-2 button is-large is-round" @click="toggleForward" :class="{'is-info':isforward, 'is-warning':!isforward}">
-        <span>
-          <i class="fa fa-5x fa-circle-o-notch"></i>
+      <button class="column is-3 button is-large" @click="toggleForward" :class="{'is-info':isforward, 'is-warning':!isforward}">
+        <span class="icon">
+          <i class="fa fa-2x fa-circle-o-notch"></i>
         </span>
       </button>
     </div>
