@@ -1,19 +1,74 @@
 <template>
   <div class="container">
-    <button class="button is-primary" @click="update" >Update Software</button>
-    <button type="button" name="button" @click="kk">asdfa</button>
-    <div class="block">
-      <i class="fa fa-5x fa-tint"></i><i class="fa fa-3x fa-tint"></i>
-      {{value}}
+    <!-- top button -->
+    <div class="columns">
+      <button class="column is-2 button is-large is-round" @click="toggleFluidOn" :class="{'is-success': isfluidon}">
+        <span>
+          <i class="fa fa-5x fa-tint"></i>
+        </span>
+      </button>
+
+      <div class="column is-8 ">
+        <button class="button is-large is-round" @click="toggleRun" :class="{'is-success':isrun}"><i class="fa fa-3x fa-play-circle"></i></button>
+      </div>
+
+      <button class="column is-2 button is-large is-round" @click="toggleForward" :class="{'is-info':isforward, 'is-warning':!isforward}">
+        <span>
+          <i class="fa fa-5x fa-circle-o-notch"></i>
+        </span>
+      </button>
     </div>
+
     <div class="block">
-      <fa-rating glyph="fa-tint" :max-rating=8 v-model="msg">
+      <fa-rating glyph="fa-tint" :max-rating=5 :show-rating=false v-model="fluid_rate">
       </fa-rating>
+    </div>
+
+    <!-- BLDC -->
+    <div class="columns">
+      <div class="column is-3">
+        <h1 class="title is-3">Gear Ratio</h1>
+      </div>
+      <div class="box column is-2">
+        <h1 class="title is-3">20:1</h1>
+      </div>
+      <div class="column is-2">
+      </div>
+      <div class="box column is-2">
+        <h1 class="title is-3">50</h1>
+      </div>
+      <div class="column is-3">
+        <h1 class="title is-3">N cm</h1>
+      </div>
+    </div>
+
+    <!-- RPM -->
+    <div class="columns">
+      <div class="column is-7">
+        <vue-slider v-model="rpm" :height=40 :dotSize=60> </vue-slider>
+      </div>
+      <div class="box column is-2">
+        <h1 class="title is-3">{{rpm}}</h1>
+      </div>
+      <div class="column is-3">
+        <h1 class="title is-3">RPM</h1>
+      </div>
 
     </div>
+
+
+    <!-- FOOTER -->
     <div class="block">
-      <vue-slider v-model="value"></vue-slider>
+
+        <button class="button is-primary" @click="update" >
+          <span class="icon"><i class="fa fa-download"></i></span>
+          <span>Update Software</span>
+        </button>
+
     </div>
+
+
+
   </div>
 
 
@@ -30,15 +85,32 @@ export default {
   name: 'hello',
   data () {
     return {
-      msg: 2,
-      value:3
+      rpm: 2,
+      fluid_rate:1,
+      isfluidon:false,
+      isforward:true,
+      isrun:false
     }
   },
   components:{
     FaRating,
     vueSlider
   },
+  watch:{
+    'rpm': function(val, oldval){
+      console.log(val);
+    }
+  },
   methods:{
+    toggleFluidOn(){
+      this.isfluidon = !this.isfluidon;
+    },
+    toggleForward(){
+      this.isforward = !this.isforward;
+    },
+    toggleRun(){
+      this.isrun = !this.isrun;
+    },
     kk(){
       request.get("/aa").end((err,res)=>{
         console.log(err,res)
@@ -73,4 +145,11 @@ li {
 a {
   color: #42b983;
 }
+
+.is-round {
+ height: 140px;
+ width: 140px;
+ border-radius: 50%;
+}
+
 </style>
