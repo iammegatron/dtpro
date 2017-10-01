@@ -103,11 +103,21 @@ export default {
   watch:{
     'rpm': function(val, oldval){
       console.log(val);
+    },
+    'fluid_rate': function(val){
+      if(this.isfluidon){
+        reqeuest.get('dcmotor').query({rpm:this.fluid_rate});
+      }
     }
   },
   methods:{
     toggleFluidOn(){
       this.isfluidon = !this.isfluidon;
+      if(this.isfluidon){
+        reqeuest.get('dcmotor').query({rpm:this.fluid_rate});
+      }else{
+        reqeuest.get('dcmotor').query({rpm:0});
+      }
     },
     toggleForward(){
       this.isforward = !this.isforward;
@@ -115,11 +125,7 @@ export default {
     toggleRun(){
       this.isrun = !this.isrun;
     },
-    kk(){
-      request.get("/aa").end((err,res)=>{
-        console.log(err,res)
-      })
-    },
+
     update(){
       console.log("updating...")
       request.get('/update').end((err,res)=>{

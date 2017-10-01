@@ -32,13 +32,17 @@ app.get('/dcmotor', (req,res)=>{
       p6.digitalWrite(0)
       p13.digitalWrite(0)
     }else{
-      p5.pwmWrite(0) //0 to 255
+      p5.pwmWrite(+req.query.rpm) //0 to 255
       p6.digitalWrite(1)
       p13.digitalWrite(0)
     }
   }else{
-
+    p5.digitalWrite(0)
+    p6.digitalWrite(0)
+    p13.digitalWrite(0)
   }
+  res.sendStatus(200);
+
 });
 
 app.get('/update', (req, res) => {
@@ -65,7 +69,7 @@ app.listen(3000, function () {
 const Gpio = require('pigpio').Gpio;
 p5 = new Gpio(5, {mode: Gpio.OUTPUT}); //ENA; PWM
 p6 = new Gpio(6, {mode: Gpio.OUTPUT}); //IN1
-p13 = new Gpio(13), {mode: Gpio.OUTPUT});//IN2
+p13 = new Gpio(13, {mode: Gpio.OUTPUT});//IN2
 
 //init
 p5.digitalWrite(0)
