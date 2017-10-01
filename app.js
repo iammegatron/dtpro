@@ -24,8 +24,21 @@ app.get('/', function (req, res) {
 //   })
 // });
 
-app.get('/aa', (req,res)=>{
-  res.send("asdfadf")
+app.get('/dcmotor', (req,res)=>{
+  console.log("set dc motor:", req.query.rpm);
+  if(req.query.rpm){
+    if(req.query.rpm==0){
+      p5.digitalWrite(0)
+      p6.digitalWrite(0)
+      p13.digitalWrite(0)
+    }else{
+      p5.pwmWrite(0) //0 to 255
+      p6.digitalWrite(1)
+      p13.digitalWrite(0)
+    }
+  }else{
+
+  }
 });
 
 app.get('/update', (req, res) => {
@@ -46,3 +59,15 @@ app.get('/update', (req, res) => {
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!')
 })
+
+
+//gpio control
+const Gpio = require('pigpio').Gpio;
+p5 = new Gpio(5, {mode: Gpio.OUTPUT}); //ENA; PWM
+p6 = new Gpio(6, {mode: Gpio.OUTPUT}); //IN1
+p13 = new Gpio(13), {mode: Gpio.OUTPUT});//IN2
+
+//init
+p5.digitalWrite(0)
+p6.digitalWrite(0)
+p13.digitalWrite(0)
