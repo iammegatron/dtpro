@@ -33,7 +33,7 @@ app.get('/acmotor', (req,res)=>{
 
 app.get('/acspeed', (req,res)=>{
   console.log("set ac motor speed:", req.query.rpm);
-  mb.setMotorParam([{num:31, type:1, val:req.query.rpm}])
+  mb.setMotorParam([{num:31, type:1, val:10*req.query.rpm}]) //scale from 0--100 to 0--1000
   mb.getMotorParam([{num:31, type:1, val:null}],(_, params)=>{
     res.json(params);
   })
@@ -42,7 +42,7 @@ app.get('/acspeed', (req,res)=>{
 
 app.get('/direction', (req,res)=>{
   console.log("set ac motor direction:", req.query.dir);
-  mb.setMotorParam([{num:30, type:1, val:req.query.dir}])
+  mb.setMotorParam([{num:30, type:1, val:+req.query.dir}])
   mb.getMotorParam([{num:30, type:1, val:null}],(_, params)=>{
     res.json(params);
   })
@@ -108,6 +108,6 @@ sp.config({options:{baudrate:9600}})
 setTimeout(()=>{
   sp.open({id:'/dev/ttyACM0'}, ()=>{
     mb.init(sp)
-    mb.setGpio([[0,1]])
+    setTimeout(()=>{mb.setGpio([[0,1]])},5000)
   })
 }, 5000)
