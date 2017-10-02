@@ -16,7 +16,7 @@ app.get('/', function (req, res) {
 
 app.get('/acmotor', (req,res)=>{
   console.log("start/stop motor:", req.query.run);
-  if(req.query.run){
+  if(+req.query.run){
     mb.startMotor(()=>{
       mb.getMotorParam([{num:32, type:1, val:null}],(_, params)=>{
         res.json(params);
