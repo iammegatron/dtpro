@@ -89,7 +89,7 @@ export default {
   name: 'hello',
   data () {
     return {
-      rpm: 2,
+      rpm: 20,
       fluid_rate:1,
       isfluidon:false,
       isforward:true,
@@ -103,6 +103,7 @@ export default {
   watch:{
     'rpm': function(val, oldval){
       console.log(val);
+      request.get('/acspeed').query({rpm:val}).end();
     },
     'fluid_rate': function(val){
       if(this.isfluidon){
@@ -121,9 +122,11 @@ export default {
     },
     toggleForward(){
       this.isforward = !this.isforward;
+      request.get('/direction').query({dir:+this.isforward}).end();
     },
     toggleRun(){
       this.isrun = !this.isrun;
+      request.get('/acmotor').query({run:+this.isrun}).end();
     },
 
     update(){

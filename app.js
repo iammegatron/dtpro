@@ -14,15 +14,39 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname + "/dist/index.html")
 })
 
+app.get('/acmotor', (req,res)=>{
+  console.log("start/stop motor:", req.query.run);
+  if(req.query.run){
+    mb.startMotor(()=>{
+      mb.getMotorParam([{num:32, type:1, val:null}],(_, params)=>{
+        res.json(params);
+      })
+    })
+  }else{
+    mb.startMotor(()=>{
+      mb.getMotorParam([{num:32, type:1, val:null}],(_, params)=>{
+        res.json(params);
+      })
+    })
+  }
+})
 
-// app.get('/update', (req, res) => {
-//   resp = {}
-//   resp.cur_ver = require('./package.json').version;
-//   git.fetch({"--tags":null}).tags((e,tags)=>{
-//         resp.latest_ver = tags.latest
-//         res.status(200).json(resp);
-//   })
-// });
+app.get('/acspeed', (req,res)=>{
+  console.log("set ac motor speed:", req.query.rpm);
+  mb.setMotorParam([{num:31, type:1, val:req.query.rpm}])
+  mb.getMotorParam([{num:31, type:1, val:null}],(_, params)=>{
+    res.json(params);
+  })
+})
+
+
+app.get('/direction', (req,res)=>{
+  console.log("set ac motor direction:", req.query.dir);
+  mb.setMotorParam([{num:30, type:1, val:req.query.dir}])
+  mb.getMotorParam([{num:30, type:1, val:null}],(_, params)=>{
+    res.json(params);
+  })
+})
 
 app.get('/dcmotor', (req,res)=>{
   console.log("set dc motor:", req.query.rpm);
@@ -75,3 +99,12 @@ p13 = new Gpio(13, {mode: Gpio.OUTPUT});//IN2
 p5.digitalWrite(0)
 p6.digitalWrite(0)
 p13.digitalWrite(0)
+
+//connect to drv8323 pcb
+var sp = require('ti-serialport');
+sp.pollStart(1000);
+sp.config({options:{baudrate:9600}})
+sp.open({id:'/dev/ttyACM0'})
+var mb = require('ti-mdbu-serial')
+mb.init(sp)
+mb.setGpio([[0,1]])
