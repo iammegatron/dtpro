@@ -102,9 +102,11 @@ p13.digitalWrite(0)
 
 //connect to drv8323 pcb
 var sp = require('ti-serialport');
+var mb = require('ti-mdbu-serial')
 sp.pollStart(1000);
 sp.config({options:{baudrate:9600}})
-sp.open({id:'/dev/ttyACM0'})
-var mb = require('ti-mdbu-serial')
-mb.init(sp)
-mb.setGpio([[0,1]])
+setTimeout(()=>{
+  sp.open({id:'/dev/ttyACM0'})
+  mb.init(sp)
+  mb.setGpio([[0,1]])
+}, 5000)
