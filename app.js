@@ -106,7 +106,8 @@ var mb = require('ti-mdbu-serial')
 sp.pollStart(1000);
 sp.config({options:{baudrate:9600}})
 setTimeout(()=>{
-  sp.open({id:'/dev/ttyACM0'})
-  mb.init(sp)
-  mb.setGpio([[0,1]])
+  sp.open({id:'/dev/ttyACM0'}, ()=>{
+    mb.init(sp)
+    mb.setGpio([[0,1]])
+  })
 }, 5000)
