@@ -31,15 +31,33 @@
     <!-- BLDC -->
     <div class="columns">
       <div class="column is-3">
-        <h1 class="title is-3">Gear Ratio</h1>
+        <h1 class="title is-3">Gear Ratio </h1>
       </div>
       <div class="box column is-2">
-        <h1 class="title is-3">20:1</h1>
+        <!-- <h1 class="title is-3">20:1</h1> -->
+        <div class="select">
+          <select v-model="gear">
+            <option value="100">100:1</option>
+            <option value="50">50:1</option>
+            <option value="20">20:1</option>
+
+          </select>
+
+        </div>
       </div>
       <div class="column is-2">
       </div>
       <div class="box column is-2">
-        <h1 class="title is-3">50</h1>
+        <!-- <h1 class="title is-3">50</h1> -->
+        <div class="select">
+          <select v-model="torque">
+            <option value="300">300</option>
+            <option value="150">150</option>
+            <option value="60">60</option>
+
+          </select>
+
+        </div>
       </div>
       <div class="column is-3">
         <h1 class="title is-3">N cm</h1>
@@ -49,7 +67,7 @@
     <!-- RPM -->
     <div class="columns">
       <div class="column is-7">
-        <vue-slider v-model="rpm" :height=40 :dotSize=60> </vue-slider>
+        <vue-slider v-model="rpm" :height=40 :dotSize=60 :max="maxrpm"> </vue-slider>
       </div>
       <div class="box column is-2">
         <h1 class="title is-3">{{rpm}}</h1>
@@ -89,6 +107,8 @@ export default {
   name: 'hello',
   data () {
     return {
+      gear:100,
+      torque:300,
       rpm: 20,
       fluid_rate:1,
       isfluidon:false,
@@ -113,6 +133,11 @@ export default {
   },
   created:function(){
     window.addEventListener('keypress', this.ev1)
+  },
+  computed:{
+    maxrpm:function(){
+      return 120000/this.torque;
+    }
   },
   methods:{
     ev1(event){
