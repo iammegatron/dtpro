@@ -81,11 +81,40 @@
 
     <!-- FOOTER -->
     <div class="block">
+      <div class="columns">
+        <div class="column is-2">
+          <button @click="x = (x-1>0)?x-1:1">
+            <span><i class="fa fa-3x fa-step-backward"></i></span>
 
-        <button class="button is-primary" @click="update" >
-          <span class="icon"><i class="fa fa-download"></i></span>
-          <span>Update Software</span>
-        </button>
+          </button>
+        </div>
+        <div class="column is-4">
+
+          <progress class="progress is-primary is-large" v-bind:value="x*20" max="100"></progress>
+          <span class="tag is-success">step {{x}}</span>
+        </div>
+
+        <div class="column is-2">
+          <button @click="x = (x+1<5)?x+1:5">
+            <span><i class="fa fa-3x fa-step-forward"></i></span>
+
+          </button>
+        </div>
+        <div class="column is-2">
+          <button @click="load">
+            <span><i class="fa fa-3x fa-floppy-o"></i></span>
+          </button>
+        </div>
+
+
+        <div class="column is-2">
+          <button class="button is-primary" @click="update" >
+            <span class="icon"><i class="fa fa-download"></i></span>
+            <span>Update Software</span>
+          </button>
+        </div>
+
+      </div>
 
     </div>
 
@@ -109,6 +138,8 @@ export default {
     return {
       gear:100,
       torque:300,
+      x:1,
+      steps:{},
       rpm: 20,
       fluid_rate:1,
       isfluidon:false,
@@ -132,7 +163,11 @@ export default {
     }
   },
   created:function(){
-    window.addEventListener('keypress', this.ev1)
+    window.addEventListener('keypress', this.ev1);
+    request.get('/load').end((err,res)=>{
+      console.log(err,res.body);
+      this.steps = res.body;
+    });
   },
   computed:{
     maxrpm:function(){
@@ -140,6 +175,12 @@ export default {
     }
   },
   methods:{
+    load(){
+      request.get('/load').end((err,res)=>{
+        console.log(err,res.body);
+        this.steps = res.body;
+      });
+    },
     ev1(event){
       switch(event.keyCode){
         case 49:
