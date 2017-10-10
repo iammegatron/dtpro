@@ -183,6 +183,12 @@ export default {
       if(this.isfluidon){
         request.get('/dcmotor').query({rpm:this.fluid_rate}).end();
       }
+    },
+    'x':function(){
+      if(this.isrun){
+        this.isrun = false;
+        request.get('/acmotor').query({run:+this.isrun}).end();
+      }
     }
   },
   created:function(){
@@ -208,23 +214,24 @@ export default {
     },
     ev1(event){
       switch(event.keyCode){
-        case 49:
+        case 49:  //1
           this.toggleFluidOn();
           break;
-        case 50:
+        case 50: //2
           this.toggleRun();
           break;
-        case 51:
+        case 51: //3
           this.toggleForward();
           break;
-        case 52:
+        case 52: //4
           this.stepNext();
           break;
       }
 
     },
     stepNext(){
-      console.log("next step")
+      this.x = (this.x % 5) + 1
+      console.log("next step",this.x);
     },
     toggleFluidOn(){
       this.isfluidon = !this.isfluidon;
