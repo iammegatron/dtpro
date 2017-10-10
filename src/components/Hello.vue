@@ -111,7 +111,30 @@ export default {
       }
     }
   },
+  created:function(){
+    window.addEventListener('keypress', this.ev1)
+  },
   methods:{
+    ev1(event){
+      switch(event.keyCode){
+        case 49:
+          this.toggleFluidOn();
+          break;
+        case 50:
+          this.toggleRun();
+          break;
+        case 51:
+          this.toggleForward();
+          break;
+        case 52:
+          this.stepNext();
+          break;
+      }
+
+    },
+    stepNext(){
+      console.log("next step")
+    },
     toggleFluidOn(){
       this.isfluidon = !this.isfluidon;
       if(this.isfluidon){
