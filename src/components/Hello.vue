@@ -36,7 +36,7 @@
       <div class="box column is-2">
         <!-- <h1 class="title is-3">20:1</h1> -->
         <div class="select">
-          <select v-model="gear">
+          <select v-model="steps[x].gear">
             <option value="100">100:1</option>
             <option value="50">50:1</option>
             <option value="20">20:1</option>
@@ -50,7 +50,7 @@
       <div class="box column is-2">
         <!-- <h1 class="title is-3">50</h1> -->
         <div class="select">
-          <select v-model="torque">
+          <select v-model="steps[x].torque">
             <option value="300">300</option>
             <option value="150">150</option>
             <option value="60">60</option>
@@ -67,10 +67,10 @@
     <!-- RPM -->
     <div class="columns">
       <div class="column is-7">
-        <vue-slider v-model="rpm" :height=40 :dotSize=60 :max="maxrpm"> </vue-slider>
+        <vue-slider v-model="steps[x].rpm" :height=40 :dotSize=60 :max="maxrpm"> </vue-slider>
       </div>
       <div class="box column is-2">
-        <h1 class="title is-3">{{rpm}}</h1>
+        <h1 class="title is-3">{{steps[x].rpm}}</h1>
       </div>
       <div class="column is-3">
         <h1 class="title is-3">RPM</h1>
@@ -101,7 +101,7 @@
           </button>
         </div>
         <div class="column is-2">
-          <button @click="load">
+          <button @click="save">
             <span><i class="fa fa-3x fa-floppy-o"></i></span>
           </button>
         </div>
@@ -110,16 +110,13 @@
         <div class="column is-2">
           <button class="button is-primary" @click="update" >
             <span class="icon"><i class="fa fa-download"></i></span>
-            <span>Update Software</span>
+            <span>Update</span>
           </button>
         </div>
 
       </div>
 
     </div>
-
-
-
   </div>
 
 
@@ -136,11 +133,37 @@ export default {
   name: 'hello',
   data () {
     return {
-      gear:100,
-      torque:300,
+      // gear:100,
+      // torque:300,
       x:1,
-      steps:{},
-      rpm: 20,
+      steps:{
+        1:{
+          gear:100,
+          torque:300,
+          rpm:400
+        },
+        2:{
+          gear:50,
+          torque:150,
+          rpm:800
+        },
+        3:{
+          gear:20,
+          torque:300,
+          rpm:400
+        },
+        4:{
+          gear:50,
+          torque:60,
+          rpm:2000
+        },
+        5:{
+          gear:50,
+          torque:300,
+          rpm:400
+        }
+      },
+      // rpm: 20,
       fluid_rate:1,
       isfluidon:false,
       isforward:true,
@@ -152,7 +175,7 @@ export default {
     vueSlider
   },
   watch:{
-    'rpm': function(val, oldval){
+    'myrpm': function(val){
       console.log(val);
       request.get('/acspeed').query({rpm:val}).end();
     },
@@ -170,15 +193,17 @@ export default {
     });
   },
   computed:{
+    myrpm:function(){
+      return this.steps[this.x].rpm;
+    },
     maxrpm:function(){
-      return 120000/this.torque;
+      return 120000/this.steps[this.x].torque;
     }
   },
   methods:{
-    load(){
-      request.get('/load').end((err,res)=>{
-        console.log(err,res.body);
-        this.steps = res.body;
+    save(){
+      request.post('/save').send(this.steps).end((err,res)=>{
+        console.log("sent", this.steps);
       });
     },
     ev1(event){

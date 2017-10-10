@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
+var fs = require('fs');
 
+var mysteps = JSON.parse(fs.readFileSync("./mysteps.json", 'utf8'));
 
 var git = require('simple-git')()
 
@@ -13,6 +15,18 @@ app.use(express.static(__dirname+"/dist"));
 app.get('/', function (req, res) {
   res.sendFile(__dirname + "/dist/index.html")
 })
+
+app.get('/load', (req,res)=>{
+  res.json(mysteps);
+})
+
+app.post('/save',(req,res)=>{
+  mysteps = req.body;
+  console.log("saved object:", req.body);
+  fs.writeFileSync('./mysteps.json', JSON.stringify(mysteps));
+  res.sendStatus(200);
+})
+
 
 app.get('/acmotor', (req,res)=>{
   console.log("start/stop motor:", req.query.run);

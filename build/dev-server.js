@@ -12,6 +12,7 @@ var webpack = require('webpack')
 var proxyMiddleware = require('http-proxy-middleware')
 var webpackConfig = require('./webpack.dev.conf')
 
+
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.dev.port
 // automatically open browser, if not set will be false
@@ -50,11 +51,58 @@ Object.keys(proxyTable).forEach(function (context) {
 })
 
 //mock api
+var bodyParser = require('body-parser');
+app.use(bodyParser.json()); // for parsing application/json
+var fs = require('fs');
+
+var mysteps = JSON.parse(fs.readFileSync("./mysteps.json", 'utf8'));
+
+// var mysteps = {
+//     1:{
+//       gear:100,
+//       torque:300,
+//       rpm:400
+//     },
+//     2:{
+//       gear:50,
+//       torque:150,
+//       rpm:800
+//     },
+//     3:{
+//       gear:20,
+//       torque:300,
+//       rpm:400
+//     },
+//     4:{
+//       gear:50,
+//       torque:60,
+//       rpm:2000
+//     },
+//     5:{
+//       gear:50,
+//       torque:300,
+//       rpm:400
+//     }
+//   };
+
+
 app.get('/load', (req,res)=>{
-  res.json({1:{a:1,b:2},2:{a:3,b:4}});
+  res.json(mysteps);
 })
 
+app.post('/save',(req,res)=>{
+  mysteps = req.body;
+  console.log("saved object:", req.body);
+  fs.writeFileSync('./mysteps.json', JSON.stringify(mysteps));
+  res.sendStatus(200);
+})
 
+app.get('/acspeed',(req, res)=>{
+  console.log("m:", req.query.rpm);
+  res.sendStatus(200);
+})
+
+//end mock api
 
 // handle fallback for HTML5 history API
 app.use(require('connect-history-api-fallback')())
